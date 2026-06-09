@@ -139,6 +139,17 @@ CREATE TABLE IF NOT EXISTS birthdays (
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
+    console.log(message.content);
+
+    if (!message.content.startsWith('!birthday')) return;
+
+    console.log('Birthday command detected');
+    });
+
+
+client.on('messageCreate', async message => {
+    if (message.author.bot) return;
+
     if (!message.content.startsWith('!birthday')) return;
 
     const args = message.content.split(' ');

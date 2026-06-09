@@ -233,10 +233,7 @@ client.on('guildMemberRemove', member => {
 const BIRTHDAY_CHANNEL_ID = '1507860338962464788';
 
 const birthdayImages = [
-    './images/birthday1.gif',
-    './images/birthday2.png',
-    './images/birthday3.gif',
-    './images/birthday4.png'
+    './images/birthday.jpeg',
 ];
 
 cron.schedule('0 9 * * *', () => {

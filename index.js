@@ -107,10 +107,7 @@ client.on('messageCreate', async message => {
 
         // Random images
         const images = [
-            './images/goodnight1.gif',
-            './images/goodnight2.png',
-            './images/goodnight3.gif',
-            './images/goodnight4.png'
+            './images/bicep.jpeg'
         ];
 
         // Pick random image
@@ -119,10 +116,8 @@ client.on('messageCreate', async message => {
 
         // Random replies (optional)
         const replies = [
-            'sleep well 🌙',
-            'goodnight 😴',
-            'sweet dreams ✨',
-            'night night'
+            'You asked?',
+
         ];
 
         // Pick random reply

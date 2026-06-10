@@ -319,7 +319,7 @@ cron.schedule('* * * * *', async () => {
 
        if (
     today === data.birthday
-)
+){
 
             const randomImage =
                 birthdayImages[

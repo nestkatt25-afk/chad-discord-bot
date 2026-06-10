@@ -1,5 +1,7 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
+const fs = require('fs');
+const cron = require('node-cron');
 
 const client = new Client({
     intents: [
@@ -11,17 +13,30 @@ const client = new Client({
 });
 
 
-
-const cron = require('node-cron');
-
 const OWNER_ID = '1068014227547238510';
 
 // =========================
 // BOT ONLINE
 // =========================
 
+let birthdays = {};
+
+if (fs.existsSync('./birthdays.json')) {
+    birthdays = JSON.parse(
+        fs.readFileSync('./birthdays.json')
+    );
+}
+
+function saveBirthdays() {
+    fs.writeFileSync(
+        './birthdays.json',
+        JSON.stringify(birthdays, null, 2)
+    );
+}
+
 client.once('clientReady', () => {
     console.log(`${client.user.tag} is online!`);
+    console.log('Birthday system loaded');
 
     client.user.setPresence({
         activities: [{
@@ -123,6 +138,187 @@ client.on('messageCreate', async message => {
 });
 
 
+// =========================
+// BIRTHDAY
+// =========================
+
+const BIRTHDAY_SETUP_CHANNEL = '1507860338962464788';
+const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
+
+client.on('messageCreate', async message => {
+
+    if (message.author.bot) return;
+
+    if (message.channel.id !== BIRTHDAY_SETUP_CHANNEL) return;
+
+    const args = message.content.split(' ');
+
+    // SET BIRTHDAY
+    if (args[0] === '!birthday') {
+
+        const birthday = args[1];
+
+        if (!birthday) {
+            return message.reply(
+                'Use: !birthday MM-DD'
+            );
+        }
+
+        if (!/^\d{2}-\d{2}$/.test(birthday)) {
+            return message.reply(
+                'Format must be MM-DD'
+            );
+        }
+
+        if (!birthdays[message.author.id]) {
+            birthdays[message.author.id] = {};
+        }
+
+        birthdays[message.author.id].birthday =
+            birthday;
+
+        saveBirthdays();
+
+        return message.reply(
+            `🎂 Birthday saved: ${birthday}`
+        );
+    }
+
+    // SET TIMEZONE
+    if (args[0] === '!timezone') {
+
+        const timezone = args.slice(1).join(' ');
+
+        if (!timezone) {
+            return message.reply(
+                'Example: !timezone America/New_York'
+            );
+        }
+
+        if (!birthdays[message.author.id]) {
+            birthdays[message.author.id] = {};
+        }
+
+        birthdays[message.author.id].timezone =
+            timezone;
+
+        saveBirthdays();
+
+        return message.reply(
+            `🌎 Timezone saved: ${timezone}`
+        );
+    }
+
+    // VIEW
+    if (args[0] === '!birthdayview') {
+
+        const data =
+            birthdays[message.author.id];
+
+        if (!data) {
+            return message.reply(
+                'No birthday set.'
+            );
+        }
+
+        return message.reply(
+            `🎂 Birthday: ${data.birthday}\n🌎 Timezone: ${data.timezone || 'Not set'}`
+        );
+    }
+
+    // REMOVE
+    if (args[0] === '!birthdayremove') {
+
+        delete birthdays[message.author.id];
+
+        saveBirthdays();
+
+        return message.reply(
+            'Birthday removed.'
+        );
+    }
+});
+
+client.on('guildMemberRemove', member => {
+
+    if (birthdays[member.id]) {
+
+        delete birthdays[member.id];
+
+        saveBirthdays();
+
+        console.log(
+            `Removed birthday for ${member.user.tag}`
+        );
+    }
+});
+
+// ========================
+// birthday announcement
+// ========================
+
+cron.schedule('* * * * *', async () => {
+
+    const channel =
+        client.channels.cache.get(
+            BIRTHDAY_ANNOUNCE_CHANNEL
+        );
+
+    if (!channel) return;
+
+    const now = new Date();
+
+    for (const userId in birthdays) {
+
+        const data = birthdays[userId];
+
+        if (
+            !data.birthday ||
+            !data.timezone
+        ) continue;
+
+        const localDate =
+            new Date().toLocaleString(
+                'en-US',
+                {
+                    timeZone: data.timezone
+                }
+            );
+
+        const userNow =
+            new Date(localDate);
+
+        const month =
+            String(
+                userNow.getMonth() + 1
+            ).padStart(2, '0');
+
+        const day =
+            String(
+                userNow.getDate()
+            ).padStart(2, '0');
+
+        const today =
+            `${month}-${day}`;
+
+        const hour =
+            userNow.getHours();
+
+        const minute =
+            userNow.getMinutes();
+
+        if (
+            today === data.birthday &&
+            hour === 0 &&
+            minute === 0
+        ) {
+
+            await channel.send(
+                `🎉 Happy Birthday <@${userId}>! 🎂`
+            );
+        }
+    }
+});
 
 // =========================
 // LOGIN

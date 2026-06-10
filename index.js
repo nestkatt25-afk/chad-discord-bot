@@ -262,6 +262,8 @@ const birthdayImages = [
     './images/birthday2.jpeg',
     './images/birthday3.jpeg',
     './images/birthday4.jpeg'
+    './images/birthday5.jpeg'
+    './images/birthday6.jpeg'
 ];
 
 cron.schedule('* * * * *', async () => {

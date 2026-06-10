@@ -11,7 +11,7 @@ const client = new Client({
 });
 
 
-const sqlite3 = require('sqlite3').verbose();
+
 const cron = require('node-cron');
 
 const OWNER_ID = '1068014227547238510';

@@ -103,7 +103,7 @@ client.on('messageCreate', async message => {
     const msg = message.content.toLowerCase();
 
     // SINGLE TRIGGER
-    if (msg.includes('goodnight')) {
+    if (msg.includes('bicep')) {
 
         // Random images
         const images = [

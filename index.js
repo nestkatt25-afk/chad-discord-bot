@@ -21,7 +21,8 @@ const OWNER_ID = '1068014227547238510';
 // =========================
 
 client.once('clientReady', () => {
-    console.log(`${client.user.tag} is online!`);
+console.log('VERSION 2 - BOT STARTED');
+console.log(`${client.user.tag} is online!`);
 
     client.user.setPresence({
         activities: [{
@@ -30,6 +31,10 @@ client.once('clientReady', () => {
         }],
         status: 'online'
     });
+});
+
+client.on('messageCreate', message => {
+    console.log('MESSAGE:', message.content);
 });
 
 // =========================

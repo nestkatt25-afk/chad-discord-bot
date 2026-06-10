@@ -267,74 +267,47 @@ const birthdayImages = [
 ];
 
 cron.schedule('* * * * *', async () => {
-
-    const channel =
-        client.channels.cache.get(
-            BIRTHDAY_ANNOUNCE_CHANNEL
-        );
-
+    const channel = client.channels.cache.get(BIRTHDAY_ANNOUNCE_CHANNEL);
     if (!channel) return;
 
     const now = new Date();
 
     for (const userId in birthdays) {
-
         const data = birthdays[userId];
 
-        if (
-            !data.birthday ||
-            !data.timezone
-        ) continue;
+        if (!data.birthday || !data.timezone) continue;
 
-        const localDate =
-            new Date().toLocaleString(
-                'en-US',
-                {
-                    timeZone: data.timezone
-                }
-            );
+        const localDate = new Date().toLocaleString('en-US', {
+            timeZone: data.timezone
+        });
 
-        const userNow =
-            new Date(localDate);
+        const userNow = new Date(localDate);
 
-        const month =
-            String(
-                userNow.getMonth() + 1
-            ).padStart(2, '0');
+        const month = String(userNow.getMonth() + 1).padStart(2, '0');
+        const day = String(userNow.getDate()).padStart(2, '0');
+        const today = `${month}-${day}`;
 
-        const day =
-            String(
-                userNow.getDate()
-            ).padStart(2, '0');
+        const hour = userNow.getHours();
+        const minute = userNow.getMinutes();
 
-        const today =
-            `${month}-${day}`;
+        const todayStr = now.toISOString().split('T')[0];
 
-        const hour =
-            userNow.getHours();
+        if (data.lastAnnounced === todayStr) continue;
 
-        const minute =
-            userNow.getMinutes();
-
-        if (
-            today === data.birthday &&
-            hour === 0 &&
-            minute === 0
-        ) {
-
+        if (today === data.birthday && hour === 0 && minute === 0) {
             const randomImage =
-    birthdayImages[
-        Math.floor(
-            Math.random() * birthdayImages.length
-        )
-    ];
+                birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
 
-await channel.send({
-    content: `It's your birthday? Here's your gift, <@${userId}> 😏`,
-    files: [randomImage]
-});
+            await channel.send({
+                content: `It's your birthday? Here's your gift, <@${userId}> 😏`,
+                files: [randomImage]
+            });
+
+            data.lastAnnounced = todayStr;
         }
     }
+
+    saveBirthdays();
 });
 
 // =========================

@@ -252,6 +252,10 @@ client.on('guildMemberRemove', member => {
 // birthday announcement
 // ========================
 
+// ========================
+// birthday announcement
+// ========================
+
 const birthdayImages = [
     './images/birthday.jpeg',
     './images/birthday2.jpeg',
@@ -262,47 +266,88 @@ const birthdayImages = [
 ];
 
 cron.schedule('* * * * *', async () => {
-    const channel = client.channels.cache.get(BIRTHDAY_ANNOUNCE_CHANNEL);
+
+    const channel =
+        client.channels.cache.get(
+            BIRTHDAY_ANNOUNCE_CHANNEL
+        );
+
     if (!channel) return;
 
-    const now = new Date();
-
     for (const userId in birthdays) {
+
         const data = birthdays[userId];
 
-        if (!data.birthday || !data.timezone) continue;
+        if (
+            !data.birthday ||
+            !data.timezone
+        ) continue;
 
-        const localDate = new Date().toLocaleString('en-US', {
-            timeZone: data.timezone
-        });
+        const localDate =
+            new Date().toLocaleString(
+                'en-US',
+                {
+                    timeZone: data.timezone
+                }
+            );
 
-        const userNow = new Date(localDate);
+        const userNow =
+            new Date(localDate);
 
-        const month = String(userNow.getMonth() + 1).padStart(2, '0');
-        const day = String(userNow.getDate()).padStart(2, '0');
-        const today = `${month}-${day}`;
+        const month =
+            String(
+                userNow.getMonth() + 1
+            ).padStart(2, '0');
 
-        const hour = userNow.getHours();
-        const minute = userNow.getMinutes();
+        const day =
+            String(
+                userNow.getDate()
+            ).padStart(2, '0');
 
-        const todayStr = now.toISOString().split('T')[0];
+        const today =
+            `${month}-${day}`;
 
-        if (data.lastAnnounced === todayStr) continue;
+        const hour =
+            userNow.getHours();
 
-        if (today === data.birthday && hour === 0 && minute === 0) {
+        const minute =
+            userNow.getMinutes();
+
+        const todayKey =
+            `${userNow.getFullYear()}-${month}-${day}`;
+
+        // already announced today
+        if (
+            data.lastAnnounced === todayKey
+        ) continue;
+
+        if (
+            today === data.birthday &&
+            hour === 0 &&
+            minute === 0
+        ) {
+
             const randomImage =
-                birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
+                birthdayImages[
+                    Math.floor(
+                        Math.random() *
+                        birthdayImages.length
+                    )
+                ];
 
             await channel.send({
-                content: `It's your birthday? Here's your gift, <@${userId}> 😏`,
+                content:
+                    `It's your birthday? Here's your gift, <@${userId}> 😏`,
                 files: [randomImage]
             });
 
-            data.lastAnnounced = todayStr;
+            // prevent duplicates
+            data.lastAnnounced =
+                todayKey;
+
+            saveBirthdays();
         }
     }
-
-    saveBirthdays();
 });
 
 // =========================

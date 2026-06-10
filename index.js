@@ -257,6 +257,13 @@ client.on('guildMemberRemove', member => {
 // birthday announcement
 // ========================
 
+const birthdayImages = [
+    './images/birthday.jpeg',
+    './images/birthday2.jpeg',
+    './images/birthday3.jpeg',
+    './images/birthday4.jpeg'
+];
+
 cron.schedule('* * * * *', async () => {
 
     const channel =
@@ -313,9 +320,17 @@ cron.schedule('* * * * *', async () => {
             minute === 0
         ) {
 
-            await channel.send(
-                `🎉 Happy Birthday <@${userId}>! 🎂`
-            );
+            const randomImage =
+    birthdayImages[
+        Math.floor(
+            Math.random() * birthdayImages.length
+        )
+    ];
+
+await channel.send({
+    content: `It's your birthday? Here's your gift, <@${userId}> 😏`,
+    files: [randomImage]
+});
         }
     }
 });

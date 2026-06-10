@@ -252,10 +252,6 @@ client.on('guildMemberRemove', member => {
 // birthday announcement
 // ========================
 
-// ========================
-// birthday announcement
-// ========================
-
 const birthdayImages = [
     './images/birthday.jpeg',
     './images/birthday2.jpeg',
@@ -321,11 +317,9 @@ cron.schedule('* * * * *', async () => {
             data.lastAnnounced === todayKey
         ) continue;
 
-        if (
-            today === data.birthday &&
-            hour === 0 &&
-            minute === 0
-        ) {
+       if (
+    today === data.birthday
+)
 
             const randomImage =
                 birthdayImages[

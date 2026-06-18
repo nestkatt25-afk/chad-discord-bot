@@ -259,7 +259,7 @@ Australia/Sydney
 Pacific/Auckland
 
 Example:
-!timezone America/New_York`
+!timezone America/New_York OR Any IANA timezone works`
     );
 }
     

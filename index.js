@@ -216,6 +216,53 @@ client.on('messageCreate', async message => {
     );
 }
 
+// TIMEZONE HELP
+if (args[0] === '!timezonehelp') {
+
+    return message.reply(
+`🌎 Common Timezones
+
+🇺🇸 Eastern Time
+America/New_York
+
+🇨🇦 Eastern Time (Canada)
+America/Toronto
+
+🇺🇸 Central Time
+America/Chicago
+
+🇺🇸 Mountain Time
+America/Denver
+
+🇺🇸 Arizona
+America/Phoenix
+
+🇺🇸 Pacific Time
+America/Los_Angeles
+
+🇬🇧 United Kingdom
+Europe/London
+
+🇫🇷 France
+Europe/Paris
+
+🇩🇪 Germany
+Europe/Berlin
+
+🇯🇵 Japan
+Asia/Tokyo
+
+🇦🇺 Sydney
+Australia/Sydney
+
+🇳🇿 New Zealand
+Pacific/Auckland
+
+Example:
+!timezone America/New_York`
+    );
+}
+    
     // VIEW
     if (args[0] === '!birthdayview') {
 

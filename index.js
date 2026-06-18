@@ -180,29 +180,41 @@ client.on('messageCreate', async message => {
     }
 
     // SET TIMEZONE
-    if (args[0] === '!timezone') {
+   if (args[0] === '!timezone') {
 
-        const timezone = args.slice(1).join(' ');
+    const timezone = args.slice(1).join(' ');
 
-        if (!timezone) {
-            return message.reply(
-                'Example: !timezone America/New_York'
-            );
-        }
-
-        if (!birthdays[message.author.id]) {
-            birthdays[message.author.id] = {};
-        }
-
-        birthdays[message.author.id].timezone =
-            timezone;
-
-        saveBirthdays();
-
+    if (!timezone) {
         return message.reply(
-            `🌎 Timezone saved: ${timezone}`
+            'Example: !timezone America/New_York'
         );
     }
+
+    try {
+        Intl.DateTimeFormat(
+            'en-US',
+            { timeZone: timezone }
+        );
+
+    } catch {
+        return message.reply(
+            'Invalid timezone. Example: America/New_York'
+        );
+    }
+
+    if (!birthdays[message.author.id]) {
+        birthdays[message.author.id] = {};
+    }
+
+    birthdays[message.author.id].timezone =
+        timezone;
+
+    saveBirthdays();
+
+    return message.reply(
+        `🌎 Timezone saved: ${timezone}`
+    );
+}
 
     // VIEW
     if (args[0] === '!birthdayview') {

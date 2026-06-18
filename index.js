@@ -326,6 +326,11 @@ cron.schedule('* * * * *', async () => {
         client.channels.cache.get(
             BIRTHDAY_ANNOUNCE_CHANNEL
         );
+    
+    console.log(
+    'Channel found:',
+    !!channel
+);
 
     if (!channel) return;
 

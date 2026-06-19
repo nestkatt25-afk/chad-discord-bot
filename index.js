@@ -402,7 +402,7 @@ const randomImage =
     content:
         `Where are all the <@&1508711739645235281> crashers at?
         
-Happy birthday, <@${userId}>! Here's your gift 😏`,
+Happy birthday, <@${userId}>! Here's your gift editing testing delete this after 😏`,
     files: [randomImage]
 });
 

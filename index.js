@@ -1,16 +1,22 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
-const fs = require('fs');
 const cron = require('node-cron');
 const { Pool } = require('pg');
 
+// =========================
+// POSTGRES SETUP
+// =========================
+
 const pool = new Pool({
-    connectionString:
-        process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
     }
 });
+
+// =========================
+// DISCORD CLIENT
+// =========================
 
 const client = new Client({
     intents: [
@@ -21,44 +27,30 @@ const client = new Client({
     ]
 });
 
-
 const OWNER_ID = '1068014227547238510';
 
 // =========================
-// BOT ONLINE
+// CONSTANTS
 // =========================
 
-let birthdays = {};
+const BIRTHDAY_SETUP_CHANNEL = '1507860338962464788';
+const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
 
-if (fs.existsSync('./birthdays.json')) {
-    birthdays = JSON.parse(
-        fs.readFileSync('./birthdays.json')
-    );
-}
+const birthdayImages = [
+    './images/birthday.jpeg',
+    './images/birthday2.jpeg',
+    './images/birthday3.jpeg',
+    './images/birthday4.jpeg',
+    './images/birthday5.jpeg',
+    './images/birthday6.jpeg'
+];
 
-function saveBirthdays() {
+// =========================
+// READY EVENT
+// =========================
 
-    fs.writeFileSync(
-        './birthdays.json',
-        JSON.stringify(
-            birthdays,
-            null,
-            2
-        )
-    );
-    
-}
-
-client.once('clientReady', () => {
+client.once('ready', async () => {
     console.log(`${client.user.tag} is online!`);
-    console.log('Birthday system loaded');
-
- console.log(
-        'Loaded birthdays:',
-        birthdays
-    );
-
-    client.once('clientReady', async () => {
 
     await pool.query(`
         CREATE TABLE IF NOT EXISTS birthdays (
@@ -71,9 +63,6 @@ client.once('clientReady', () => {
 
     console.log('Birthday table ready');
 
-});
-
-
     client.user.setPresence({
         activities: [{
             name: 'emma stop touching my protein powder',
@@ -84,50 +73,31 @@ client.once('clientReady', () => {
 });
 
 // =========================
-// ch: PROXY SYSTEM
+// OWNER PROXY (ch:)
 // =========================
 
 client.on('messageCreate', async message => {
-
-    
     if (message.author.bot) return;
-
-    // Only YOU can use ch:
     if (message.author.id !== OWNER_ID) return;
-
-    // Must start with ch:
     if (!message.content.startsWith('ch:')) return;
 
-    // Remove "ch:"
     const text = message.content.slice(3).trim();
+    const attachments = message.attachments.map(a => a.url);
 
-    // Grab uploaded files/images
-    const attachments = message.attachments.map(att => att.url);
-
-    // If replying to someone
     if (message.reference) {
+        const replied = await message.channel.messages.fetch(message.reference.messageId);
 
-        // Fetch original replied message
-        const repliedMessage = await message.channel.messages.fetch(
-            message.reference.messageId
-        );
-
-        // Bot replies with text + image
-        await repliedMessage.reply({
+        await replied.reply({
             content: text || null,
             files: attachments
         });
-
     } else {
-
-        // Bot sends normal message + image
         await message.channel.send({
             content: text || null,
             files: attachments
         });
     }
 
-    // Delete your original command
     await message.delete();
 });
 
@@ -140,338 +110,175 @@ client.on('messageCreate', async message => {
 
     const msg = message.content.toLowerCase();
 
-    // SINGLE TRIGGER
     if (msg.includes('bicep')) {
-
-        // Random images
-        const images = [
-            './images/bicep.jpeg'
-        ];
-
-        // Pick random image
-        const randomImage =
-            images[Math.floor(Math.random() * images.length)];
-
-        // Random replies (optional)
-        const replies = [
-            'You asked?',
-
-        ];
-
-        // Pick random reply
-        const randomReply =
-            replies[Math.floor(Math.random() * replies.length)];
-
-        // Send
         await message.reply({
-            content: randomReply,
-            files: [randomImage]
+            content: 'You asked?',
+            files: ['./images/bicep.jpeg']
         });
     }
 });
 
-
 // =========================
-// BIRTHDAY
+// BIRTHDAY SYSTEM
 // =========================
-
-const BIRTHDAY_SETUP_CHANNEL = '1507860338962464788';
-const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
 
 client.on('messageCreate', async message => {
-
     if (message.author.bot) return;
-
     if (message.channel.id !== BIRTHDAY_SETUP_CHANNEL) return;
 
     const args = message.content.split(' ');
 
+    // -------------------------
     // SET BIRTHDAY
+    // -------------------------
     if (args[0] === '!birthday') {
-
         const birthday = args[1];
 
         if (!birthday) {
-            return message.reply(
-                'Baby, the format is: !birthday MM-DD'
-            );
+            return message.reply('Format: !birthday MM-DD');
         }
 
         if (!/^\d{2}-\d{2}$/.test(birthday)) {
-            return message.reply(
-                'Remember baby, the format must be MM-DD, not M-DD or MM-D'
-            );
-        }
-
-        if (!birthdays[message.author.id]) {
-            birthdays[message.author.id] = {};
+            return message.reply('Format must be MM-DD');
         }
 
         await pool.query(
-    `
-    INSERT INTO birthdays
-    (user_id, birthday)
-    VALUES ($1, $2)
-    ON CONFLICT (user_id)
-    DO UPDATE SET birthday = $2
-    `,
-    [
-        message.author.id,
-        birthday
-    ]
-);
-
-        return message.reply(
-            `Your birthday is on ${birthday}? I'll be sure to remember that, babe`
+            `
+            INSERT INTO birthdays (user_id, birthday)
+            VALUES ($1, $2)
+            ON CONFLICT (user_id)
+            DO UPDATE SET birthday = $2
+            `,
+            [message.author.id, birthday]
         );
+
+        return message.reply(`Saved birthday: ${birthday}`);
     }
 
+    // -------------------------
     // SET TIMEZONE
-   if (args[0] === '!timezone') {
+    // -------------------------
+    if (args[0] === '!timezone') {
+        const timezone = args.slice(1).join(' ');
 
-    const timezone = args.slice(1).join(' ');
-
-    if (!timezone) {
-        return message.reply(
-            'Need an example? !timezone America/New_York'
-        );
-    }
-
-    try {
-        Intl.DateTimeFormat(
-            'en-US',
-            { timeZone: timezone }
-        );
-
-    } catch {
-        return message.reply(
-            'Uh, babe? Did you mistype it? Not letting me put your timezone in the system. Where is Emma when you need her...'
-        );
-    }
-
-    if (!birthdays[message.author.id]) {
-        birthdays[message.author.id] = {};
-    }
-
-   await pool.query(
-    `
-    INSERT INTO birthdays
-    (user_id, timezone)
-    VALUES ($1, $2)
-    ON CONFLICT (user_id)
-    DO UPDATE SET timezone = $2
-    `,
-    [
-        message.author.id,
-        timezone
-    ]
-);
-
-    saveBirthdays();
-
-    return message.reply(
-        `Oh, so you're in ${timezone}? Visited there for a vlog, you should go watch it`
-    );
-}
-
-// TIMEZONE HELP
-if (args[0] === '!timezonehelp') {
-
-    return message.reply(
-`🌎 Common Timezones
-
-🇺🇸 Eastern Time
-America/New_York
-
-🇨🇦 Eastern Time (Canada)
-America/Toronto
-
-🇺🇸 Central Time
-America/Chicago
-
-🇺🇸 Mountain Time
-America/Denver
-
-🇺🇸 Arizona
-America/Phoenix
-
-🇺🇸 Pacific Time
-America/Los_Angeles
-
-🇬🇧 United Kingdom
-Europe/London
-
-🇫🇷 France
-Europe/Paris
-
-🇩🇪 Germany
-Europe/Berlin
-
-🇯🇵 Japan
-Asia/Tokyo
-
-🇦🇺 Sydney
-Australia/Sydney
-
-🇳🇿 New Zealand
-Pacific/Auckland
-
-Example:
-!timezone Any IANA timezone works, not just the ones on this list`
-    );
-}
-    
-    // VIEW
-    if (args[0] === '!birthdayview') {
-
-        const data =
-            birthdays[message.author.id];
-
-        if (!data) {
-            return message.reply(
-                'Baby, you did not write your birthday down yet.'
-            );
+        if (!timezone) {
+            return message.reply('Example: !timezone America/New_York');
         }
 
+        try {
+            Intl.DateTimeFormat('en-US', { timeZone: timezone });
+        } catch {
+            return message.reply('Invalid timezone.');
+        }
+
+        await pool.query(
+            `
+            INSERT INTO birthdays (user_id, timezone)
+            VALUES ($1, $2)
+            ON CONFLICT (user_id)
+            DO UPDATE SET timezone = $2
+            `,
+            [message.author.id, timezone]
+        );
+
+        return message.reply(`Timezone saved: ${timezone}`);
+    }
+
+    // -------------------------
+    // VIEW
+    // -------------------------
+    if (args[0] === '!birthdayview') {
+        const result = await pool.query(
+            'SELECT * FROM birthdays WHERE user_id = $1',
+            [message.author.id]
+        );
+
+        if (result.rows.length === 0) {
+            return message.reply('No birthday found.');
+        }
+
+        const data = result.rows[0];
+
         return message.reply(
-            `Birthday: ${data.birthday}\nTimezone: ${data.timezone || 'Not set'}`
+            `Birthday: ${data.birthday || 'Not set'}\nTimezone: ${data.timezone || 'Not set'}`
         );
     }
 
+    // -------------------------
     // REMOVE
+    // -------------------------
     if (args[0] === '!birthdayremove') {
-
-        delete birthdays[message.author.id];
-
-        saveBirthdays();
-
-        return message.reply(
-            'Birthday and timezone removed. Not a big celebrater?'
+        await pool.query(
+            'DELETE FROM birthdays WHERE user_id = $1',
+            [message.author.id]
         );
+
+        return message.reply('Birthday removed.');
+    }
+
+    // -------------------------
+    // TIMEZONE HELP
+    // -------------------------
+    if (args[0] === '!timezonehelp') {
+        return message.reply(`
+Common Timezones:
+America/New_York
+America/Toronto
+America/Chicago
+America/Denver
+America/Los_Angeles
+Europe/London
+Europe/Paris
+Asia/Tokyo
+Australia/Sydney
+        `);
     }
 });
 
-client.on('guildMemberRemove', member => {
-
-    if (birthdays[member.id]) {
-
-        delete birthdays[member.id];
-
-        saveBirthdays();
-
-        console.log(
-            `Removed birthday for ${member.user.tag}`
-        );
-    }
-});
-
-// ========================
-// birthday announcement
-// ========================
-
-const birthdayImages = [
-    './images/birthday.jpeg',
-    './images/birthday2.jpeg',
-    './images/birthday3.jpeg',
-    './images/birthday4.jpeg',
-    './images/birthday5.jpeg',
-    './images/birthday6.jpeg'
-];
-
+// =========================
+// BIRTHDAY CRON (EVERY MINUTE)
+// =========================
 
 cron.schedule('* * * * *', async () => {
-
-    const channel =
-        client.channels.cache.get(
-            BIRTHDAY_ANNOUNCE_CHANNEL
-        );
-    
-
+    const channel = client.channels.cache.get(BIRTHDAY_ANNOUNCE_CHANNEL);
     if (!channel) return;
 
-    const result =
-    await pool.query(
-        'SELECT * FROM birthdays'
-    );
+    const result = await pool.query('SELECT * FROM birthdays');
 
-for (const data of result.rows) {
+    for (const data of result.rows) {
+        if (!data.birthday || !data.timezone) continue;
 
-    const userId =
-        data.user_id;
+        const localDate = new Date().toLocaleString('en-US', {
+            timeZone: data.timezone
+        });
 
-    // rest of birthday logic
-}
+        const now = new Date(localDate);
 
-        const data = birthdays[userId];
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
 
-        if (
-            !data.birthday ||
-            !data.timezone
-        ) continue;
+        const today = `${month}-${day}`;
+        const todayKey = `${now.getFullYear()}-${month}-${day}`;
 
-        const localDate =
-            new Date().toLocaleString(
-                'en-US',
-                {
-                    timeZone: data.timezone
-                }
+        if (data.last_announced === todayKey) continue;
+
+        if (today === data.birthday) {
+            const image =
+                birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
+
+            await channel.send({
+                content: `Happy birthday <@${data.user_id}> 🎉`,
+                files: [image]
+            });
+
+            await pool.query(
+                `
+                UPDATE birthdays
+                SET last_announced = $1
+                WHERE user_id = $2
+                `,
+                [todayKey, data.user_id]
             );
-
-        const userNow =
-            new Date(localDate);
-
-        const month =
-            String(
-                userNow.getMonth() + 1
-            ).padStart(2, '0');
-
-        const day =
-            String(
-                userNow.getDate()
-            ).padStart(2, '0');
-
-        const today =
-            `${month}-${day}`;
-
-        const hour =
-            userNow.getHours();
-
-        const minute =
-            userNow.getMinutes();
-
-        const todayKey =
-            `${userNow.getFullYear()}-${month}-${day}`;
-
-        // already announced today
-        if (
-            data.lastAnnounced === todayKey
-        ) continue;
-
-       if (
-    today === data.birthday
-){
-
-const randomImage =
-    birthdayImages[
-        Math.floor(
-            Math.random() *
-            birthdayImages.length
-        )
-    ];
-           
-          await channel.send({
-    content:
-        `Where are all the <@&1508711739645235281> crashers at?
-        
-Happy birthday, <@${userId}>! Here's your gift editing testing delete this after 😏`,
-    files: [randomImage]
-});
-
-            // prevent duplicates
-            data.lastAnnounced =
-                todayKey;
-
-            saveBirthdays();
         }
     }
 });

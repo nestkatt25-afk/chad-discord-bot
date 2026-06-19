@@ -2,6 +2,15 @@ const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
 const fs = require('fs');
 const cron = require('node-cron');
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    connectionString:
+        process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 const client = new Client({
     intents: [
@@ -48,6 +57,21 @@ client.once('clientReady', () => {
         'Loaded birthdays:',
         birthdays
     );
+
+    client.once('clientReady', async () => {
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS birthdays (
+            user_id TEXT PRIMARY KEY,
+            birthday TEXT,
+            timezone TEXT,
+            last_announced TEXT
+        )
+    `);
+
+    console.log('Birthday table ready');
+
+});
 
 
     client.user.setPresence({
@@ -183,10 +207,19 @@ client.on('messageCreate', async message => {
             birthdays[message.author.id] = {};
         }
 
-        birthdays[message.author.id].birthday =
-            birthday;
-
-        saveBirthdays();
+        await pool.query(
+    `
+    INSERT INTO birthdays
+    (user_id, birthday)
+    VALUES ($1, $2)
+    ON CONFLICT (user_id)
+    DO UPDATE SET birthday = $2
+    `,
+    [
+        message.author.id,
+        birthday
+    ]
+);
 
         return message.reply(
             `Your birthday is on ${birthday}? I'll be sure to remember that, babe`
@@ -220,8 +253,19 @@ client.on('messageCreate', async message => {
         birthdays[message.author.id] = {};
     }
 
-    birthdays[message.author.id].timezone =
-        timezone;
+   await pool.query(
+    `
+    INSERT INTO birthdays
+    (user_id, timezone)
+    VALUES ($1, $2)
+    ON CONFLICT (user_id)
+    DO UPDATE SET timezone = $2
+    `,
+    [
+        message.author.id,
+        timezone
+    ]
+);
 
     saveBirthdays();
 
@@ -345,7 +389,18 @@ cron.schedule('* * * * *', async () => {
 
     if (!channel) return;
 
-    for (const userId in birthdays) {
+    const result =
+    await pool.query(
+        'SELECT * FROM birthdays'
+    );
+
+for (const data of result.rows) {
+
+    const userId =
+        data.user_id;
+
+    // rest of birthday logic
+}
 
         const data = birthdays[userId];
 

@@ -44,7 +44,11 @@ client.once('clientReady', () => {
     console.log(`${client.user.tag} is online!`);
     console.log('Birthday system loaded');
 
-    console.log('Loaded birthdays:', birthdays);
+ console.log(
+        'Loaded birthdays:',
+        birthdays
+    );
+
 
     client.user.setPresence({
         activities: [{

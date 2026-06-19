@@ -29,11 +29,6 @@ if (fs.existsSync('./birthdays.json')) {
 
 function saveBirthdays() {
 
-    console.log(
-        'Saving birthdays:',
-        birthdays
-    );
-
     fs.writeFileSync(
         './birthdays.json',
         JSON.stringify(
@@ -42,10 +37,7 @@ function saveBirthdays() {
             2
         )
     );
-
-    console.log(
-        'Birthday save complete'
-    );
+    
 }
 
 client.once('clientReady', () => {
@@ -67,10 +59,7 @@ client.once('clientReady', () => {
 
 client.on('messageCreate', async message => {
 
-    console.log(
-    'Birthday channel message:',
-    message.content
-);
+    
     if (message.author.bot) return;
 
     // Only YOU can use ch:
@@ -162,10 +151,6 @@ const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
 client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
-    console.log(
-    'Current channel:',
-    message.channel.id
-);
 
     if (message.channel.id !== BIRTHDAY_SETUP_CHANNEL) return;
 
@@ -342,10 +327,6 @@ cron.schedule('* * * * *', async () => {
             BIRTHDAY_ANNOUNCE_CHANNEL
         );
     
-    console.log(
-    'Channel found:',
-    !!channel
-);
 
     if (!channel) return;
 

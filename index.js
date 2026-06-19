@@ -148,6 +148,10 @@ const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
 client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
+    console.log(
+    'Current channel:',
+    message.channel.id
+);
 
     if (message.channel.id !== BIRTHDAY_SETUP_CHANNEL) return;
 

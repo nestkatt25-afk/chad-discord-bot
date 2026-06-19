@@ -402,8 +402,11 @@ const randomImage =
     content:
         `It's your birthday? Here's your gift, <@${userId}> 😏
         
-Where's all the <@${Party}> crashers at?`,
+Where's all the <@&1512452693078315121> crashers at?`,
     files: [randomImage]
+              allowedMentions: {
+        roles: ['1512452693078315121']
+    }
 });
 
             // prevent duplicates

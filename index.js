@@ -402,7 +402,7 @@ const randomImage =
     content:
         `It's your birthday? Here's your gift, <@${userId}> 😏
         
-We're throwing a party for you, here's everyone's invitation <@${Party}>`,
+Where's all the <@${Party}> crashers at?`,
     files: [randomImage]
 });
 

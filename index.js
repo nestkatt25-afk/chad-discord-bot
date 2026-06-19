@@ -404,8 +404,6 @@ const randomImage =
         
 Where's all the <@&1512452693078315121> crashers at?`,
     files: [randomImage]
-              allowedMentions: {
-        roles: ['1512452693078315121']
     }
 });
 

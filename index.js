@@ -28,9 +28,23 @@ if (fs.existsSync('./birthdays.json')) {
 }
 
 function saveBirthdays() {
+
+    console.log(
+        'Saving birthdays:',
+        birthdays
+    );
+
     fs.writeFileSync(
         './birthdays.json',
-        JSON.stringify(birthdays, null, 2)
+        JSON.stringify(
+            birthdays,
+            null,
+            2
+        )
+    );
+
+    console.log(
+        'Birthday save complete'
     );
 }
 
@@ -385,14 +399,6 @@ cron.schedule('* * * * *', async () => {
        if (
     today === data.birthday
 ){
-
-            const randomImage =
-                birthdayImages[
-                    Math.floor(
-                        Math.random() *
-                        birthdayImages.length
-                    )
-                ];
 
           await channel.send({
     content:

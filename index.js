@@ -163,13 +163,13 @@ client.on('messageCreate', async message => {
 
         if (!birthday) {
             return message.reply(
-                'Use: !birthday MM-DD'
+                'Baby, the format is: !birthday MM-DD'
             );
         }
 
         if (!/^\d{2}-\d{2}$/.test(birthday)) {
             return message.reply(
-                'Format must be MM-DD'
+                'Remember baby, the format must be MM-DD, not M-DD or MM-D'
             );
         }
 
@@ -206,7 +206,7 @@ client.on('messageCreate', async message => {
 
     } catch {
         return message.reply(
-            'Invalid timezone. Example: America/New_York'
+            'Bro, did you mistype it? Example: America/New_York'
         );
     }
 

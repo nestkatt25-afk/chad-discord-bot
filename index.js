@@ -52,6 +52,11 @@ client.once('clientReady', () => {
 // =========================
 
 client.on('messageCreate', async message => {
+
+    console.log(
+    'Birthday channel message:',
+    message.content
+);
     if (message.author.bot) return;
 
     // Only YOU can use ch:

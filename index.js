@@ -183,7 +183,7 @@ client.on('messageCreate', async message => {
         saveBirthdays();
 
         return message.reply(
-            `🎂 Birthday saved: ${birthday}`
+            `Your birthday is on ${birthday}? I'll be sure to remember that, babe`
         );
     }
 
@@ -220,7 +220,7 @@ client.on('messageCreate', async message => {
     saveBirthdays();
 
     return message.reply(
-        `🌎 Timezone saved: ${timezone}`
+        `Oh, so you're in ${timezone}? I actually met a few hot babes there. I'll tell you about them later`
     );
 }
 
@@ -279,12 +279,12 @@ Example:
 
         if (!data) {
             return message.reply(
-                'No birthday set.'
+                'Baby, you did not write your birthday down yet.'
             );
         }
 
         return message.reply(
-            `🎂 Birthday: ${data.birthday}\n🌎 Timezone: ${data.timezone || 'Not set'}`
+            `Birthday: ${data.birthday}\n Timezone: ${data.timezone || 'Not set'}`
         );
     }
 
@@ -296,7 +296,7 @@ Example:
         saveBirthdays();
 
         return message.reply(
-            'Birthday removed.'
+            'Birthday and timezone removed. Not a big celebrater?'
         );
     }
 });
@@ -400,9 +400,9 @@ const randomImage =
            
           await channel.send({
     content:
-        `It's your birthday? Here's your gift, <@${userId}> 😏
+        `Where are all the <@&1508711739645235281> crashers at?
         
-Where's all the <@&1508711739645235281> crashers at?`,
+Happy birthday, <@${userId}>! Here's your gift 😏`,
     files: [randomImage]
 });
 

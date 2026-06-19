@@ -194,7 +194,7 @@ client.on('messageCreate', async message => {
 
     if (!timezone) {
         return message.reply(
-            'Example: !timezone America/New_York'
+            'Need an example? !timezone America/New_York'
         );
     }
 
@@ -206,7 +206,7 @@ client.on('messageCreate', async message => {
 
     } catch {
         return message.reply(
-            'Bro, did you mistype it? Example: America/New_York'
+            'Uh, babe? Did you mistype it? Not letting me put your timezone in the system. Where is Emma when you need her...'
         );
     }
 
@@ -220,7 +220,7 @@ client.on('messageCreate', async message => {
     saveBirthdays();
 
     return message.reply(
-        `Oh, so you're in ${timezone}? I actually met a few hot babes there. I'll tell you about them later`
+        `Oh, so you're in ${timezone}? Visited there for a vlog, you should go watch it`
     );
 }
 
@@ -267,7 +267,7 @@ Australia/Sydney
 Pacific/Auckland
 
 Example:
-!timezone America/New_York OR Any IANA timezone works`
+!timezone Any IANA timezone works, not just the ones on this list`
     );
 }
     
@@ -284,7 +284,7 @@ Example:
         }
 
         return message.reply(
-            `Birthday: ${data.birthday}\n Timezone: ${data.timezone || 'Not set'}`
+            `Birthday: ${data.birthday}\nTimezone: ${data.timezone || 'Not set'}`
         );
     }
 

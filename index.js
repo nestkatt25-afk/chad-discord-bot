@@ -390,6 +390,14 @@ cron.schedule('* * * * *', async () => {
     today === data.birthday
 ){
 
+const randomImage =
+    birthdayImages[
+        Math.floor(
+            Math.random() *
+            birthdayImages.length
+        )
+    ];
+           
           await channel.send({
     content:
         `It's your birthday? Here's your gift, <@${userId}> 😏

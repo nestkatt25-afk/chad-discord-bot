@@ -282,12 +282,11 @@ client.on('messageCreate', async message => {
             return message.reply('Need an example? !timezone America/New_York');
         }
 
-       try {
+      try {
     Intl.DateTimeFormat('en-US', { timeZone: timezone });
 } catch {
     return message.reply(
-        [
-            'Uh, babe? Did you mistype it? Not letting me put your timezone in the system. Where is Emma when you need her...',
+        'Uh, babe? Did you mistype it? Not letting me put your timezone in the system. Where is Emma when you need her...'
     );
 }
 

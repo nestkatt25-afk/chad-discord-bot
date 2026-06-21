@@ -103,7 +103,7 @@ async function sendSticky(channel) {
                     'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
                 ].join('\n')
             )
-            .setColor(0xEA7D70);
+            .setColor(0x7C0A02);
 
         const sticky =
             await channel.send({

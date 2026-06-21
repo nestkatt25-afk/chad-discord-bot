@@ -1,4 +1,9 @@
-const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
+const {
+    Client,
+    GatewayIntentBits,
+    ActivityType,
+    EmbedBuilder
+} = require('discord.js');
 require('dotenv').config();
 const cron = require('node-cron');
 const { Pool } = require('pg');
@@ -37,6 +42,11 @@ const OWNER_ID = '1068014227547238510';
 
 const BIRTHDAY_SETUP_CHANNEL = '1507860338962464788';
 const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
+const STICKY_CHANNEL_ID = BIRTHDAY_SETUP_CHANNEL;
+
+const STICKY_EVERY_MESSAGES = 4;
+
+let stickyCounter = 0;
 
 const birthdayImages = [
     './images/birthday.jpeg',
@@ -46,6 +56,86 @@ const birthdayImages = [
     './images/birthday5.jpeg',
     './images/birthday6.jpeg'
 ];
+
+
+// =========================
+// STICKY NOTE
+// =========================
+
+async function sendSticky(channel) {
+
+    try {
+
+        const oldStickyResult =
+            await pool.query(
+                `
+                SELECT message_id
+                FROM sticky_messages
+                WHERE channel_id = $1
+                `,
+                [channel.id]
+            );
+
+        if (oldStickyResult.rows.length > 0) {
+
+            const oldMessageId =
+                oldStickyResult.rows[0].message_id;
+
+            const oldMessage =
+                await channel.messages
+                    .fetch(oldMessageId)
+                    .catch(() => null);
+
+            if (oldMessage) {
+                await oldMessage.delete().catch(() => {});
+            }
+        }
+
+        const embed = new EmbedBuilder()
+            .setTitle('🎂 Birthday Setup')
+            .setDescription(
+                [
+                    '**Commands**',
+                    '',
+                    '`!birthday MM-DD`',
+                    '`!timezone America/New_York`',
+                    '`!birthdayview`',
+                    '`!birthdayremove`',
+                    '`!timezonehelp`',
+                    '',
+                    'Please set BOTH your birthday and timezone so the birthday system can work correctly.'
+                ].join('\n')
+            )
+            .setColor(0xff66cc);
+
+        const sticky =
+            await channel.send({
+                embeds: [embed]
+            });
+
+        await pool.query(
+            `
+            INSERT INTO sticky_messages
+            (channel_id, message_id)
+            VALUES ($1, $2)
+            ON CONFLICT (channel_id)
+            DO UPDATE SET message_id = $2
+            `,
+            [
+                channel.id,
+                sticky.id
+            ]
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Sticky error:',
+            error
+        );
+
+    }
+}
 
 // =========================
 // READY EVENT
@@ -63,7 +153,27 @@ client.once('clientReady', async () => {
         )
     `);
 
-    console.log('Birthday table ready');
+    console.log('Birthday table ready'); 
+
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS sticky_messages (
+        channel_id TEXT PRIMARY KEY,
+        message_id TEXT
+    )
+`);
+
+console.log('Sticky table ready');
+
+    const stickyChannel =
+    client.channels.cache.get(
+        STICKY_CHANNEL_ID
+    );
+
+if (stickyChannel) {
+    await sendSticky(
+        stickyChannel
+    );
+}
 
     client.user.setPresence({
         activities: [{
@@ -235,6 +345,35 @@ Asia/Tokyo
 Australia/Sydney
         `);
     }
+});
+
+// =========================
+// STICKY MESSAGE SYSTEM EVERY MINUTE
+// =========================
+
+client.on('messageCreate', async message => {
+
+    if (message.author.bot) return;
+
+    if (
+        message.channel.id !==
+        STICKY_CHANNEL_ID
+    ) return;
+
+    stickyCounter++;
+
+    if (
+        stickyCounter >=
+        STICKY_EVERY_MESSAGES
+    ) {
+
+        stickyCounter = 0;
+
+        await sendSticky(
+            message.channel
+        );
+    }
+
 });
 
 // =========================

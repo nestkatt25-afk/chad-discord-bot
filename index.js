@@ -106,9 +106,8 @@ async function sendSticky(channel) {
                     '',
                     '`!timezonehelp` — if you need further help on how to work timezone',
                     '',
-                    '───────────────────────────────────────────────────────',
+                    '───── ⋆.✶.⋆ ─────',
                     '',
-                    'ᵎ!ᵎ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.',
                     'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
                 ].join('\n')
             )

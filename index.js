@@ -48,14 +48,6 @@ const STICKY_EVERY_MESSAGES = 4;
 
 let stickyCounter = 0;
 
-const birthdayImages = [
-    './images/birthday.jpeg',
-    './images/birthday2.jpeg',
-    './images/birthday3.jpeg',
-    './images/birthday4.jpeg',
-    './images/birthday5.jpeg',
-    './images/birthday6.jpeg'
-];
 
 
 // =========================
@@ -403,6 +395,15 @@ client.on('messageCreate', async message => {
 // BIRTHDAY CRON (EVERY MINUTE)
 // =========================
 
+const birthdayImages = [
+    './images/birthday.jpeg',
+    './images/birthday2.jpeg',
+    './images/birthday3.jpeg',
+    './images/birthday4.jpeg',
+    './images/birthday5.jpeg',
+    './images/birthday6.jpeg'
+];
+
 cron.schedule('* * * * *', async () => {
     const channel = client.channels.cache.get(BIRTHDAY_ANNOUNCE_CHANNEL);
     if (!channel) return;
@@ -434,7 +435,7 @@ cron.schedule('* * * * *', async () => {
                 content: `Where are all the <@&1508711739645235281> crashers at?
         
 Happy birthday, <@${data.user_id}>! Here's your gift 😏`,
-                files: [randomImage]
+                files: [image]
             });
 
             await pool.query(

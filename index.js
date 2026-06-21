@@ -97,20 +97,17 @@ async function sendSticky(channel) {
                 [
                     '',
                     '`!birthday MM-DD` — Will not work if not formatted this way',
-                    '⊰═══════════════════⊱',
                     '`!timezone IANA timezones` — timezone format ',
-                    '⊰═══════════════════⊱',
                     '`!birthdayview` — view your info',
-                    '⊰═══════════════════⊱',
                     '`!birthdayremove` — this will remove *both* your birthdate and timezone',
-                    '⊰═══════════════════⊱',
                     '`!timezonehelp` — if you need further help on how to work timezone',
+                    '',
                     '⊰═══════════════════⊱',
                     '',
                     'Please set BOTH your birthday and timezone so the birthday system can work correctly.'
                 ].join('\n')
             )
-            .setColor(0xFFD662);
+            .setColor(0xEA7D70);
 
         const sticky =
             await channel.send({

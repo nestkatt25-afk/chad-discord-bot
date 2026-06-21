@@ -252,11 +252,11 @@ client.on('messageCreate', async message => {
         const birthday = args[1];
 
         if (!birthday) {
-            return message.reply('Format: !birthday MM-DD');
+            return message.reply('Baby, the format is: !birthday MM-DD');
         }
 
         if (!/^\d{2}-\d{2}$/.test(birthday)) {
-            return message.reply('Format must be MM-DD');
+            return message.reply('Remember baby, the format must be MM-DD, not M-DD or MM-D');
         }
 
         await pool.query(
@@ -269,7 +269,7 @@ client.on('messageCreate', async message => {
             [message.author.id, birthday]
         );
 
-        return message.reply(`Saved birthday: ${birthday}`);
+        return message.reply(`Your birthday is on ${birthday}? I'll be sure to remember that, babe`);
     }
 
     // -------------------------
@@ -279,14 +279,17 @@ client.on('messageCreate', async message => {
         const timezone = args.slice(1).join(' ');
 
         if (!timezone) {
-            return message.reply('Example: !timezone America/New_York');
+            return message.reply('Need an example? !timezone America/New_York');
         }
 
-        try {
-            Intl.DateTimeFormat('en-US', { timeZone: timezone });
-        } catch {
-            return message.reply('Invalid timezone.');
-        }
+       try {
+    Intl.DateTimeFormat('en-US', { timeZone: timezone });
+} catch {
+    return message.reply(
+        [
+            'Uh, babe? Did you mistype it? Not letting me put your timezone in the system. Where is Emma when you need her...',
+    );
+}
 
         await pool.query(
             `
@@ -298,7 +301,7 @@ client.on('messageCreate', async message => {
             [message.author.id, timezone]
         );
 
-        return message.reply(`Timezone saved: ${timezone}`);
+        return message.reply(`Oh, so you're in ${timezone}? Visited there for a vlog, you should go watch it`);
     }
 
     // -------------------------
@@ -311,7 +314,7 @@ client.on('messageCreate', async message => {
         );
 
         if (result.rows.length === 0) {
-            return message.reply('No birthday found.');
+            return message.reply('Baby, you did not write your birthday down yet.');
         }
 
         const data = result.rows[0];
@@ -330,7 +333,7 @@ client.on('messageCreate', async message => {
             [message.author.id]
         );
 
-        return message.reply('Birthday removed.');
+        return message.reply('Birthday and timezone removed. Not a big celebrater?');
     }
 
     // -------------------------
@@ -429,8 +432,10 @@ cron.schedule('* * * * *', async () => {
                 birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
 
             await channel.send({
-                content: `Happy birthday <@${data.user_id}> 🎉 Where are all the <@&1508711739645235281> crashers at?`,
-                files: [image]
+                content: `Where are all the <@&1508711739645235281> crashers at?
+        
+Happy birthday, <@${userId}>! Here's your gift 😏`,
+                files: [randomImage]
             });
 
             await pool.query(

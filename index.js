@@ -92,21 +92,25 @@ async function sendSticky(channel) {
         }
 
         const embed = new EmbedBuilder()
-            .setTitle('🎂 Birthday Setup')
+            .setTitle('Commands')
             .setDescription(
                 [
-                    '**Commands**',
                     '',
-                    '`!birthday MM-DD`',
-                    '`!timezone America/New_York`',
-                    '`!birthdayview`',
-                    '`!birthdayremove`',
-                    '`!timezonehelp`',
+                    '`!birthday MM-DD` — Will not work if not formatted this way',
+                    '⊰═══════════════════⊱',
+                    '`!timezone IANA timezones` — timezone format ',
+                    '⊰═══════════════════⊱',
+                    '`!birthdayview` — view your info',
+                    '⊰═══════════════════⊱',
+                    '`!birthdayremove` — this will remove *both* your birthdate and timezone',
+                    '⊰═══════════════════⊱',
+                    '`!timezonehelp` — if you need further help on how to work timezone',
+                    '⊰═══════════════════⊱',
                     '',
                     'Please set BOTH your birthday and timezone so the birthday system can work correctly.'
                 ].join('\n')
             )
-            .setColor(0xff66cc);
+            .setColor(0xFFD662);
 
         const sticky =
             await channel.send({

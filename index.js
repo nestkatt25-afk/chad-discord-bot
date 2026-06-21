@@ -1,5 +1,22 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
+const cron = require('node-cron');
+const { Pool } = require('pg');
+
+// =========================
+// POSTGRES SETUP
+// =========================
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+// =========================
+// DISCORD CLIENT
+// =========================
 
 const client = new Client({
     intents: [
@@ -10,18 +27,41 @@ const client = new Client({
     ]
 });
 
-
-
-const cron = require('node-cron');
-
 const OWNER_ID = '1068014227547238510';
 
 // =========================
-// BOT ONLINE
+// CONSTANTS
 // =========================
 
-client.once('clientReady', () => {
+const BIRTHDAY_SETUP_CHANNEL = '1507860338962464788';
+const BIRTHDAY_ANNOUNCE_CHANNEL = '1507860498178117642';
+
+const birthdayImages = [
+    './images/birthday.jpeg',
+    './images/birthday2.jpeg',
+    './images/birthday3.jpeg',
+    './images/birthday4.jpeg',
+    './images/birthday5.jpeg',
+    './images/birthday6.jpeg'
+];
+
+// =========================
+// READY EVENT
+// =========================
+
+client.once('ready', async () => {
     console.log(`${client.user.tag} is online!`);
+
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS birthdays (
+            user_id TEXT PRIMARY KEY,
+            birthday TEXT,
+            timezone TEXT,
+            last_announced TEXT
+        )
+    `);
+
+    console.log('Birthday table ready');
 
     client.user.setPresence({
         activities: [{
@@ -33,48 +73,31 @@ client.once('clientReady', () => {
 });
 
 // =========================
-// ch: PROXY SYSTEM
+// OWNER PROXY (ch:)
 // =========================
 
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
-
-    // Only YOU can use ch:
     if (message.author.id !== OWNER_ID) return;
-
-    // Must start with ch:
     if (!message.content.startsWith('ch:')) return;
 
-    // Remove "ch:"
     const text = message.content.slice(3).trim();
+    const attachments = message.attachments.map(a => a.url);
 
-    // Grab uploaded files/images
-    const attachments = message.attachments.map(att => att.url);
-
-    // If replying to someone
     if (message.reference) {
+        const replied = await message.channel.messages.fetch(message.reference.messageId);
 
-        // Fetch original replied message
-        const repliedMessage = await message.channel.messages.fetch(
-            message.reference.messageId
-        );
-
-        // Bot replies with text + image
-        await repliedMessage.reply({
+        await replied.reply({
             content: text || null,
             files: attachments
         });
-
     } else {
-
-        // Bot sends normal message + image
         await message.channel.send({
             content: text || null,
             files: attachments
         });
     }
 
-    // Delete your original command
     await message.delete();
 });
 
@@ -87,195 +110,177 @@ client.on('messageCreate', async message => {
 
     const msg = message.content.toLowerCase();
 
-    // SINGLE TRIGGER
-    if (msg.includes('goodnight')) {
-
-        // Random images
-        const images = [
-            './images/goodnight1.gif',
-            './images/goodnight2.png',
-            './images/goodnight3.gif',
-            './images/goodnight4.png'
-        ];
-
-        // Pick random image
-        const randomImage =
-            images[Math.floor(Math.random() * images.length)];
-
-        // Random replies (optional)
-        const replies = [
-            'sleep well 🌙',
-            'goodnight 😴',
-            'sweet dreams ✨',
-            'night night'
-        ];
-
-        // Pick random reply
-        const randomReply =
-            replies[Math.floor(Math.random() * replies.length)];
-
-        // Send
+    if (msg.includes('bicep')) {
         await message.reply({
-            content: randomReply,
-            files: [randomImage]
+            content: 'You asked?',
+            files: ['./images/bicep.jpeg']
         });
     }
 });
 
-
 // =========================
-// BIRTHDAY
+// BIRTHDAY SYSTEM
 // =========================
-
-const db = new sqlite3.Database('./birthdays.db');
-
-db.run(`
-CREATE TABLE IF NOT EXISTS birthdays (
-    userId TEXT PRIMARY KEY,
-    birthday TEXT
-)
-`);
 
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
-
-    if (!message.content.startsWith('!birthday')) return;
+    if (message.channel.id !== BIRTHDAY_SETUP_CHANNEL) return;
 
     const args = message.content.split(' ');
-    const subcommand = args[1];
 
-    // !birthday view
-    if (subcommand === 'view') {
+    // -------------------------
+    // SET BIRTHDAY
+    // -------------------------
+    if (args[0] === '!birthday') {
+        const birthday = args[1];
 
-        db.get(
-            'SELECT birthday FROM birthdays WHERE userId = ?',
-            [message.author.id],
-            (err, row) => {
+        if (!birthday) {
+            return message.reply('Format: !birthday MM-DD');
+        }
 
-                if (!row) {
-                    return message.reply(
-                        'You have not set a birthday yet.'
-                    );
-                }
+        if (!/^\d{2}-\d{2}$/.test(birthday)) {
+            return message.reply('Format must be MM-DD');
+        }
 
-                message.reply(
-                    `🎂 Your birthday is ${row.birthday}`
-                );
-            }
+        await pool.query(
+            `
+            INSERT INTO birthdays (user_id, birthday)
+            VALUES ($1, $2)
+            ON CONFLICT (user_id)
+            DO UPDATE SET birthday = $2
+            `,
+            [message.author.id, birthday]
         );
 
-        return;
+        return message.reply(`Saved birthday: ${birthday}`);
     }
 
-    // !birthday remove
-    if (subcommand === 'remove') {
+    // -------------------------
+    // SET TIMEZONE
+    // -------------------------
+    if (args[0] === '!timezone') {
+        const timezone = args.slice(1).join(' ');
 
-        db.run(
-            'DELETE FROM birthdays WHERE userId = ?',
+        if (!timezone) {
+            return message.reply('Example: !timezone America/New_York');
+        }
+
+        try {
+            Intl.DateTimeFormat('en-US', { timeZone: timezone });
+        } catch {
+            return message.reply('Invalid timezone.');
+        }
+
+        await pool.query(
+            `
+            INSERT INTO birthdays (user_id, timezone)
+            VALUES ($1, $2)
+            ON CONFLICT (user_id)
+            DO UPDATE SET timezone = $2
+            `,
+            [message.author.id, timezone]
+        );
+
+        return message.reply(`Timezone saved: ${timezone}`);
+    }
+
+    // -------------------------
+    // VIEW
+    // -------------------------
+    if (args[0] === '!birthdayview') {
+        const result = await pool.query(
+            'SELECT * FROM birthdays WHERE user_id = $1',
             [message.author.id]
         );
 
-        message.reply(
-            'Your birthday has been removed.'
-        );
-
-        return;
-    }
-
-    // !birthday MM-DD
-    const birthday = args[1];
-
-    if (!birthday) {
-        return message.reply(
-            'Usage: `!birthday MM-DD`'
-        );
-    }
-
-    const validFormat =
-        /^\d{2}-\d{2}$/.test(birthday);
-
-    if (!validFormat) {
-        return message.reply(
-            'Use format: MM-DD (example: 05-30)'
-        );
-    }
-
-    db.run(
-        'INSERT OR REPLACE INTO birthdays (userId, birthday) VALUES (?, ?)',
-        [message.author.id, birthday]
-    );
-
-    message.reply(
-        `🎂 Birthday saved as ${birthday}`
-    );
-});
-
-client.on('guildMemberRemove', member => {
-
-    db.run(
-        'DELETE FROM birthdays WHERE userId = ?',
-        [member.id]
-    );
-
-});
-
-const BIRTHDAY_CHANNEL_ID = '1507860338962464788';
-
-const birthdayImages = [
-    './images/birthday1.gif',
-    './images/birthday2.png',
-    './images/birthday3.gif',
-    './images/birthday4.png'
-];
-
-cron.schedule('0 9 * * *', () => {
-
-    const today = new Date();
-
-    const month =
-        String(today.getMonth() + 1).padStart(2, '0');
-
-    const day =
-        String(today.getDate()).padStart(2, '0');
-
-    const todayString = `${month}-${day}`;
-
-    db.all(
-        'SELECT * FROM birthdays WHERE birthday = ?',
-        [todayString],
-        async (err, rows) => {
-
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            const channel =
-                client.channels.cache.get(
-                    BIRTHDAY_CHANNEL_ID
-                );
-
-            if (!channel) return;
-
-            for (const row of rows) {
-
-                const image =
-                    birthdayImages[
-                        Math.floor(
-                            Math.random() *
-                            birthdayImages.length
-                        )
-                    ];
-
-                await channel.send({
-                    content:
-                        `🎉 Happy Birthday <@${row.userId}>! 🎂`,
-                    files: [image]
-                });
-            }
+        if (result.rows.length === 0) {
+            return message.reply('No birthday found.');
         }
-    );
 
+        const data = result.rows[0];
+
+        return message.reply(
+            `Birthday: ${data.birthday || 'Not set'}\nTimezone: ${data.timezone || 'Not set'}`
+        );
+    }
+
+    // -------------------------
+    // REMOVE
+    // -------------------------
+    if (args[0] === '!birthdayremove') {
+        await pool.query(
+            'DELETE FROM birthdays WHERE user_id = $1',
+            [message.author.id]
+        );
+
+        return message.reply('Birthday removed.');
+    }
+
+    // -------------------------
+    // TIMEZONE HELP
+    // -------------------------
+    if (args[0] === '!timezonehelp') {
+        return message.reply(`
+Common Timezones:
+America/New_York
+America/Toronto
+America/Chicago
+America/Denver
+America/Los_Angeles
+Europe/London
+Europe/Paris
+Asia/Tokyo
+Australia/Sydney
+        `);
+    }
+});
+
+// =========================
+// BIRTHDAY CRON (EVERY MINUTE)
+// =========================
+
+cron.schedule('* * * * *', async () => {
+    const channel = client.channels.cache.get(BIRTHDAY_ANNOUNCE_CHANNEL);
+    if (!channel) return;
+
+    const result = await pool.query('SELECT * FROM birthdays');
+
+    for (const data of result.rows) {
+        if (!data.birthday || !data.timezone) continue;
+
+        const localDate = new Date().toLocaleString('en-US', {
+            timeZone: data.timezone
+        });
+
+        const now = new Date(localDate);
+
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+
+        const today = `${month}-${day}`;
+        const todayKey = `${now.getFullYear()}-${month}-${day}`;
+
+        if (data.last_announced === todayKey) continue;
+
+        if (today === data.birthday) {
+            const image =
+                birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
+
+            await channel.send({
+                content: `Happy birthday <@${data.user_id}> 🎉`,
+                files: [image]
+            });
+
+            await pool.query(
+                `
+                UPDATE birthdays
+                SET last_announced = $1
+                WHERE user_id = $2
+                `,
+                [todayKey, data.user_id]
+            );
+        }
+    }
 });
 
 // =========================

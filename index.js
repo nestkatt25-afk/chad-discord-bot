@@ -51,7 +51,7 @@ const birthdayImages = [
 // READY EVENT
 // =========================
 
-client.once('ready', async () => {
+client.once('clientReady', async () => {
     console.log(`${client.user.tag} is online!`);
 
     await pool.query(`

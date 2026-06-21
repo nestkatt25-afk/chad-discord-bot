@@ -339,14 +339,14 @@ client.on('messageCreate', async message => {
     if (args[0] === '!timezonehelp') {
 
     const embed = new EmbedBuilder()
-        .setTitle('🌎 Timezone Help')
+        .setTitle('⩇⩇:⩇⩇ Timezone Help')
         .setDescription(
             [
-                'Any valid IANA timezone works.',
+                '⤷ Any valid IANA timezone works.',
                 '',
                 '**Examples**',
                 '• America/New_York',
-                '• America/Chicago',
+                '• Europe/Moscow',
                 '• America/Los_Angeles',
                 '• Europe/London',
                 '• Asia/Tokyo',
@@ -356,7 +356,7 @@ client.on('messageCreate', async message => {
                 '**Full Timezone List**',
                 'https://en.wikipedia.org/wiki/List_of_tz_database_time_zones',
                 '',
-                '**Example Command**',
+                '**⤷ Example**',
                 '`!timezone Asia/Manila`'
             ].join('\n')
         )

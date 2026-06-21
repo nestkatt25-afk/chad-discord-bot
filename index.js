@@ -364,8 +364,9 @@ client.on('messageCreate', async message => {
 
     return message.reply({
         embeds: [embed]
-    );
+    });
 }
+    }); 
 
 // =========================
 // STICKY MESSAGE SYSTEM EVERY MINUTE

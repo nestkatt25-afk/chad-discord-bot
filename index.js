@@ -92,7 +92,7 @@ async function sendSticky(channel) {
         }
 
         const embed = new EmbedBuilder()
-            .setTitle('Commands')
+            .setTitle('⌘ Commands')
             .setDescription(
                 [
                     '',
@@ -102,13 +102,14 @@ async function sendSticky(channel) {
                     '',
                     '`!birthdayview` — view your info',
                     '',
-                    '`!birthdayremove` — this will remove *both* your birthdate and timezone',
+                    '`!birthdayremove` — this will remove ***BOTH*** your birthdate and timezone',
                     '',
                     '`!timezonehelp` — if you need further help on how to work timezone',
                     '',
                     '───────────────────────────────────────────────────────',
                     '',
-                    'Please set BOTH your birthday and timezone so the birthday system can work correctly.'
+                    'ᵎ!ᵎ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
+                    'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
                 ].join('\n')
             )
             .setColor(0xEA7D70);

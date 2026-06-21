@@ -433,7 +433,7 @@ cron.schedule('* * * * *', async () => {
             await channel.send({
                 content: `Where are all the <@&1508711739645235281> crashers at?
         
-Happy birthday, <@${userId}>! Here's your gift 😏`,
+Happy birthday, <@${data.user_id}>! Here's your gift 😏`,
                 files: [randomImage]
             });
 

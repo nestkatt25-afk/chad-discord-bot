@@ -337,20 +337,35 @@ client.on('messageCreate', async message => {
     // TIMEZONE HELP
     // -------------------------
     if (args[0] === '!timezonehelp') {
-        return message.reply(`
-Common Timezones:
-America/New_York
-America/Toronto
-America/Chicago
-America/Denver
-America/Los_Angeles
-Europe/London
-Europe/Paris
-Asia/Tokyo
-Australia/Sydney
-        `);
-    }
-});
+
+    const embed = new EmbedBuilder()
+        .setTitle('🌎 Timezone Help')
+        .setDescription(
+            [
+                'Any valid IANA timezone works.',
+                '',
+                '**Examples**',
+                '• America/New_York',
+                '• America/Chicago',
+                '• America/Los_Angeles',
+                '• Europe/London',
+                '• Asia/Tokyo',
+                '• Asia/Manila',
+                '• Australia/Sydney',
+                '',
+                '**Full Timezone List**',
+                'https://en.wikipedia.org/wiki/List_of_tz_database_time_zones',
+                '',
+                '**Example Command**',
+                '`!timezone Asia/Manila`'
+            ].join('\n')
+        )
+        .setColor(0x5865F2);
+
+    return message.reply({
+        embeds: [embed]
+    });
+}
 
 // =========================
 // STICKY MESSAGE SYSTEM EVERY MINUTE

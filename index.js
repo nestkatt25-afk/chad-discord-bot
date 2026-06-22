@@ -227,6 +227,28 @@ client.on('messageCreate', async message => {
     }
 });
 
+
+// =========================
+// PING TRIGGER RESPONSE
+// =========================
+
+if (msg.includes('protein powder')) {
+
+    const embed = new EmbedBuilder()
+        .setTitle('💪 Protein Powder Alert')
+        .setDescription(
+            'Emma. Step away from the protein powder immediately.'
+        )
+        .setImage('attachment://birthday.jpg')
+        .setColor(0xEA7D70);
+
+    await message.reply({
+        embeds: [embed],
+        files: ['./images/birthday2.jpg']
+    });
+}
+
+
 // =========================
 // BIRTHDAY SYSTEM
 // =========================

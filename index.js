@@ -248,12 +248,12 @@ client.on('messageCreate', async message => {
             .setDescription(
                 'Sweet dreams, darling. Sleep well and don’t let Emma touch my protein powder while you’re gone.'
             )
-            .setImage('attachment://bicep.jpg')
+            .setImage('attachment://bicep.jpeg')
             .setColor(0x8A6DFF);
 
         await message.reply({
             embeds: [embed],
-            files: ['./images/bicep.jpg']
+            files: ['./images/bicep.jpeg']
         });
     }
 

@@ -248,7 +248,7 @@ client.on('messageCreate', async message => {
                 '𝙰𝚗𝚘𝚝𝚑𝚎𝚛 𝚍𝚘𝚕𝚕 𝚏𝚘𝚛 𝚢𝚘𝚞 𝚝𝚘 𝚌𝚑𝚎𝚛𝚒𝚜𝚑'
             )
             .setImage('attachment://mae.jpg')
-            .setColor(0xEA7D70);
+            .setColor(0xd6aae3);
 
         await message.reply({
             embeds: [embed],

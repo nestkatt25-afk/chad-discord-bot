@@ -234,26 +234,26 @@ client.on('messageCreate', async message => {
 
 const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
+const ROLE_ID = '1507687973615829063';
+
 client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
     if (message.channel.id !== CHARACTER_CHANNEL_ID) return;
 
-    const msg = message.content.toLowerCase();
-
-    if (msg.includes('goodnight')) {
+    if (message.mentions.roles.has(ROLE_ID)) {
 
         const embed = new EmbedBuilder()
-            .setTitle('🌙 Goodnight')
+            .setTitle('🎉 Party Crashers Summoned')
             .setDescription(
-                'Sweet dreams, darling. Sleep well and don’t let Emma touch my protein powder while you’re gone.'
+                'Someone called for the party crashers...'
             )
-            .setImage('attachment://bicep.jpeg')
-            .setColor(0x8A6DFF);
+            .setImage('attachment://party.jpg')
+            .setColor(0xEA7D70);
 
         await message.reply({
             embeds: [embed],
-            files: ['./images/bicep.jpeg']
+            files: ['./images/party.jpg']
         });
     }
 

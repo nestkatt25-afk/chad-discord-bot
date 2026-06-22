@@ -263,7 +263,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                'I'm too tired to come up with smth rn.'
+                'I\'m too tired to come up with smth rn.'
             )
             .setImage('attachment://bunnie bannner.png')
             .setColor(0x7f8cff);

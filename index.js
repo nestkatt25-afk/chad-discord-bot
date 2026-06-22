@@ -232,21 +232,32 @@ client.on('messageCreate', async message => {
 // PING TRIGGER RESPONSE
 // =========================
 
-if (msg.includes('protein powder')) {
+const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
-    const embed = new EmbedBuilder()
-        .setTitle('💪 Protein Powder Alert')
-        .setDescription(
-            'Emma. Step away from the protein powder immediately.'
-        )
-        .setImage('attachment://birthday.jpg')
-        .setColor(0xEA7D70);
+client.on('messageCreate', async message => {
 
-    await message.reply({
-        embeds: [embed],
-        files: ['./images/birthday2.jpg']
-    });
-}
+    if (message.author.bot) return;
+    if (message.channel.id !== CHARACTER_CHANNEL_ID) return;
+
+    const msg = message.content.toLowerCase();
+
+    if (msg.includes('goodnight')) {
+
+        const embed = new EmbedBuilder()
+            .setTitle('🌙 Goodnight')
+            .setDescription(
+                'Sweet dreams, darling. Sleep well and don’t let Emma touch my protein powder while you’re gone.'
+            )
+            .setImage('attachment://bicep.jpg')
+            .setColor(0x8A6DFF);
+
+        await message.reply({
+            embeds: [embed],
+            files: ['./images/bicep.jpg']
+        });
+    }
+
+});
 
 
 // =========================

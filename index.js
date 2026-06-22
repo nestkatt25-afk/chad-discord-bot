@@ -245,7 +245,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                '𝙰𝚗𝚘𝚝𝚑𝚎𝚛 𝚍𝚘𝚕𝚕 𝚏𝚘𝚛 𝚢𝚘𝚞 𝚝𝚘 𝚌𝚑𝚎𝚛𝚒𝚜𝚑'
+                '𝐴𝑛𝑜𝑡ℎ𝑒𝑟 𝑑𝑜𝑙𝑙 𝑓𝑜𝑟 𝑦𝑜𝑢 𝑡𝑜 𝑐ℎ𝑒𝑟𝑖𝑠ℎ'
             )
             .setImage('attachment://mae.jpg')
             .setColor(0xd6aae3);

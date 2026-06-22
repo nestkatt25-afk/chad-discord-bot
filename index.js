@@ -248,12 +248,12 @@ client.on('messageCreate', async message => {
             .setDescription(
                 'Someone called for the party crashers...'
             )
-            .setImage('attachment://party.jpg')
+            .setImage('attachment://bicep.jpeg')
             .setColor(0xEA7D70);
 
         await message.reply({
             embeds: [embed],
-            files: ['./images/party.jpg']
+            files: ['./images/bicep.jpeg']
         });
     }
 

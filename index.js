@@ -234,14 +234,16 @@ client.on('messageCreate', async message => {
 
 const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
-const ROLE_ID = '1507688168474935376';
+const MAE_ROLE_ID = '1507688168474935376';
+const BUNNIE_ROLE_ID = '1507687973615829063';
 
 client.on('messageCreate', async message => {
 
     if (message.author.bot) return;
     if (message.channel.id !== CHARACTER_CHANNEL_ID) return;
 
-    if (message.mentions.roles.has(ROLE_ID)) {
+    // Mae role
+    if (message.mentions.roles.has(MAE_ROLE_ID)) {
 
         const embed = new EmbedBuilder()
             .setDescription(
@@ -250,13 +252,31 @@ client.on('messageCreate', async message => {
             .setImage('attachment://mae.jpg')
             .setColor(0xd6aae3);
 
-        await message.reply({
+        return message.reply({
             embeds: [embed],
             files: ['./images/mae.jpg']
         });
     }
 
+    // Bunnie role
+    if (message.mentions.roles.has(BUNNIE_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'I'm too tired to come up with smth rn.'
+            )
+            .setImage('attachment://luna.jpg')
+            .setColor(0x7f8cff);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/luna.jpg']
+        });
+    }
+
 });
+
+
 
 
 // =========================

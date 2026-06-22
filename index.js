@@ -234,7 +234,7 @@ client.on('messageCreate', async message => {
 
 const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
-const ROLE_ID = '1507687973615829063';
+const ROLE_ID = '1507688168474935376';
 
 client.on('messageCreate', async message => {
 
@@ -244,16 +244,15 @@ client.on('messageCreate', async message => {
     if (message.mentions.roles.has(ROLE_ID)) {
 
         const embed = new EmbedBuilder()
-            .setTitle('🎉 Party Crashers Summoned')
             .setDescription(
-                'Someone called for the party crashers...'
+                '𝙰𝚗𝚘𝚝𝚑𝚎𝚛 𝚍𝚘𝚕𝚕 𝚏𝚘𝚛 𝚢𝚘𝚞 𝚝𝚘 𝚌𝚑𝚎𝚛𝚒𝚜𝚑'
             )
-            .setImage('attachment://bicep.jpeg')
+            .setImage('attachment://mae.jpg')
             .setColor(0xEA7D70);
 
         await message.reply({
             embeds: [embed],
-            files: ['./images/bicep.jpeg']
+            files: ['./images/mae.jpg']
         });
     }
 

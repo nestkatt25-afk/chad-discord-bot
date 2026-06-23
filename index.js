@@ -266,7 +266,7 @@ client.on('messageCreate', async message => {
                 'I\'m too tired to come up with smth rn.'
             )
             .setImage('attachment://bunniebanner.png')
-            .setColor(0x7f8cff);
+            .setColor(0xf8f8ff);
 
         return message.reply({
             embeds: [embed],

@@ -484,7 +484,7 @@ cron.schedule('* * * * *', async () => {
                 birthdayImages[Math.floor(Math.random() * birthdayImages.length)];
 
             await channel.send({
-                content: `Where are all the <@&1508711739645235281> crashers at?
+                content: `Where are all the <@&1508711739645235281>s at?
         
 Happy birthday, <@${data.user_id}>! Here's your gift 😏`,
                 files: [image]

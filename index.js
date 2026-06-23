@@ -265,12 +265,12 @@ client.on('messageCreate', async message => {
             .setDescription(
                 'I\'m too tired to come up with smth rn.'
             )
-            .setImage('attachment://bunniebannner.png')
+            .setImage('attachment://bunniebanner.png')
             .setColor(0x7f8cff);
 
         return message.reply({
             embeds: [embed],
-            files: ['./images/bunniebannner.png']
+            files: ['./images/bunniebanner.png']
         });
     }
 

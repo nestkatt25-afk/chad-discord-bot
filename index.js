@@ -235,6 +235,7 @@ client.on('messageCreate', async message => {
 const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
 const MAE_ROLE_ID = '1507688168474935376';
+const MAE_ROLE_ID = '1507688227102789752';
 const BUNNIE_ROLE_ID = '1507687973615829063';
 
 client.on('messageCreate', async message => {

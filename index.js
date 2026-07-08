@@ -237,6 +237,7 @@ const CHARACTER_CHANNEL_ID = '1507787637803716709';
 const MAE_ROLE_ID = '1507688168474935376';
 const MAE2_ROLE_ID = '1507688227102789752';
 const BUNNIE_ROLE_ID = '1507687973615829063';
+const BUNNIE2_ROLE_ID = '1507687926719447241';
 
 client.on('messageCreate', async message => {
 
@@ -276,6 +277,21 @@ client.on('messageCreate', async message => {
 
     // Bunnie role
     if (message.mentions.roles.has(BUNNIE_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'I\'m too tired to come up with smth rn.'
+            )
+            .setImage('attachment://bunniebanner.png')
+            .setColor(0xf8f8ff);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/bunniebanner.png']
+        });
+    }
+
+     if (message.mentions.roles.has(BUNNIE2_ROLE_ID)) {
 
         const embed = new EmbedBuilder()
             .setDescription(

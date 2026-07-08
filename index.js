@@ -235,7 +235,7 @@ client.on('messageCreate', async message => {
 const CHARACTER_CHANNEL_ID = '1507787637803716709';
 
 const MAE_ROLE_ID = '1507688168474935376';
-const MAE_ROLE_ID = '1507688227102789752';
+const MAE2_ROLE_ID = '1507688227102789752';
 const BUNNIE_ROLE_ID = '1507687973615829063';
 
 client.on('messageCreate', async message => {
@@ -245,6 +245,21 @@ client.on('messageCreate', async message => {
 
     // Mae role
     if (message.mentions.roles.has(MAE_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝐴𝑛𝑜𝑡ℎ𝑒𝑟 𝑑𝑜𝑙𝑙 𝑓𝑜𝑟 𝑦𝑜𝑢 𝑡𝑜 𝑐ℎ𝑒𝑟𝑖𝑠ℎ'
+            )
+            .setImage('attachment://mae.jpg')
+            .setColor(0xd6aae3);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/mae.jpg']
+        });
+    }
+
+    if (message.mentions.roles.has(MAE2_ROLE_ID)) {
 
         const embed = new EmbedBuilder()
             .setDescription(

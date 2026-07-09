@@ -214,19 +214,35 @@ client.on('messageCreate', async message => {
 // AUTO RESPONSE
 // =========================
 
+const bicepCooldown = new Map();
+const COOLDOWN_TIME = 3 * 60 * 1000; // 3 minutes
+
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
     const msg = message.content.toLowerCase();
 
-    if (msg.includes('bicep')) {
-        await message.reply({
-            content: 'You asked?',
-            files: ['./images/bicep.jpeg']
-        });
-    }
-});
+    if (!msg.includes('bicep')) return;
 
+    const now = Date.now();
+
+    // Check cooldown
+    if (bicepCooldown.has(message.guild.id)) {
+        const lastUsed = bicepCooldown.get(message.guild.id);
+
+        if (now - lastUsed < COOLDOWN_TIME) {
+            return;
+        }
+    }
+
+    // Update cooldown
+    bicepCooldown.set(message.guild.id, now);
+
+    await message.reply({
+        content: 'You asked?',
+        files: ['./images/bicep.jpeg']
+    });
+});
 
 // =========================
 // PING TRIGGER RESPONSE

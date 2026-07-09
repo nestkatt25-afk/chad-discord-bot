@@ -100,7 +100,7 @@ async function sendSticky(channel) {
                     '',
                     '───── ⋆.✶.⋆ ─────',
                     '',
-                    'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
+                    'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.',
                     'ⓘ Birthday and timezone messages must be sent separately.'
                 ].join('\n')
             )

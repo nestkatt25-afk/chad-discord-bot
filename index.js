@@ -341,7 +341,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
+                '𝙐𝙨𝙖𝙜𝙞 𝙥𝙤𝙨𝙩𝙚𝙙 𝙖𝙣 𝙖𝙚𝙨𝙩𝙝𝙚𝙩𝙞𝙘 𝙥𝙝𝙤𝙩𝙤 𝙤𝙛 𝙨𝙖𝙠𝙪𝙧𝙖 𝙛𝙡𝙤𝙬𝙚𝙧𝙨.'
             )
             .setImage('attachment://usagibanner.png')
             .setColor(0xf4a2d1);
@@ -356,7 +356,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
+                '𝙐𝙨𝙖𝙜𝙞 𝙥𝙤𝙨𝙩𝙚𝙙 𝙖𝙣 𝙖𝙚𝙨𝙩𝙝𝙚𝙩𝙞𝙘 𝙥𝙝𝙤𝙩𝙤 𝙤𝙛 𝙨𝙖𝙠𝙪𝙧𝙖 𝙛𝙡𝙤𝙬𝙚𝙧𝙨.'
             )
             .setImage('attachment://usagibanner.png')
             .setColor(0xf4a2d1);

@@ -238,6 +238,19 @@ const MAE_ROLE_ID = '1507688168474935376';
 const MAE2_ROLE_ID = '1507688227102789752';
 const BUNNIE_ROLE_ID = '1507687973615829063';
 const BUNNIE2_ROLE_ID = '1507687926719447241';
+const USAGI_ROLE_ID = '1507687788588302437';
+const USAGI2_ROLE_ID = '1507687849183412274';
+const USAGI3_ROLE_ID = '1507687849183412274';
+const QUINNIE_ROLE_ID = '1507688523824762940';
+const QUINNIE2_ROLE_ID = '1507688569660112976';
+const IVY_ROLE_ID = '1507688388658991145';
+const IVY2_ROLE_ID = '1507688436340097084';
+const HONEY_ROLE_ID = '1507688048941596703';
+const HONEY2_ROLE_ID = '1507688110828556359';
+const LOLO_ROLE_ID = '1507779699043078237';
+const LOLO2_ROLE_ID = '1507779817335160963';
+const LOLO3_ROLE_ID = '1508406810376278017';
+
 
 client.on('messageCreate', async message => {
 
@@ -249,7 +262,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                '𝐴𝑛𝑜𝑡ℎ𝑒𝑟 𝑑𝑜𝑙𝑙 𝑓𝑜𝑟 𝑦𝑜𝑢 𝑡𝑜 𝑐ℎ𝑒𝑟𝑖𝑠ℎ'
+                '𝐴𝑛𝑜𝑡ℎ𝑒𝑟 𝑑𝑜𝑙𝑙 𝑓𝑜𝑟 𝑦𝑜𝑢 𝑡𝑜 𝑐ℎ𝑒𝑟𝑖𝑠ℎ.'
             )
             .setImage('attachment://mae.jpg')
             .setColor(0xd6aae3);
@@ -264,7 +277,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                '𝐴𝑛𝑜𝑡ℎ𝑒𝑟 𝑑𝑜𝑙𝑙 𝑓𝑜𝑟 𝑦𝑜𝑢 𝑡𝑜 𝑐ℎ𝑒𝑟𝑖𝑠ℎ'
+                '𝐴𝑛𝑛𝑜𝑢𝑛𝑐𝑒𝑚𝑒𝑛𝑡 𝑓𝑟𝑜𝑚 𝑡ℎ𝑒 𝐷𝑜𝑙𝑙ℎ𝑜𝑢𝑠𝑒.'
             )
             .setImage('attachment://mae.jpg')
             .setColor(0xd6aae3);
@@ -305,6 +318,197 @@ client.on('messageCreate', async message => {
             files: ['./images/bunniebanner.png']
         });
     }
+
+    // USAGI ROLE
+     if (message.mentions.roles.has(USAGI_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
+            )
+            .setImage('attachment://usagibanner.png')
+            .setColor(0xf4a2d1);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/usagibanner.png']
+        });
+    }
+
+     if (message.mentions.roles.has(USAGI2_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
+            )
+            .setImage('attachment://usagibanner.png')
+            .setColor(0xf4a2d1);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/usagibanner.png']
+        });
+    }
+
+     if (message.mentions.roles.has(USAGI3_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
+            )
+            .setImage('attachment://usagibanner.png')
+            .setColor(0xf4a2d1);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/usagibanner.png']
+        });
+    }
+
+    // QUINNIE ROLE
+    if (message.mentions.roles.has(QUINNIE_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'ᴀ ɴᴇᴡ ʜᴇʀʙᴀʟ ʀᴇᴍᴇᴅʏ ᴛᴏ ꜱᴏᴏᴛʜᴇ ᴛʜᴇ ꜱᴏᴜʟ.'
+            )
+            .setImage('attachment://usagibanner.png')
+            .setColor(0x80afcc);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/quinniebanner.png']
+        });
+    }
+
+    if (message.mentions.roles.has(QUINNIE2_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'ᴀ ɴᴇᴡ ʜᴇʀʙᴀʟ ʀᴇᴍᴇᴅʏ ᴛᴏ ꜱᴏᴏᴛʜᴇ ᴛʜᴇ ꜱᴏᴜʟ.'
+            )
+            .setImage('attachment://quinniebanner.png')
+            .setColor(0x80afcc);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/quinniebanner.png']
+        });
+    }
+
+    // HONEY ROLE
+     if (message.mentions.roles.has(HONEY_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'PLACEHOLDER.'
+            )
+            .setImage('attachment://honeybanner.png')
+            .setColor(0x0c0c0c);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/honeybanner.png']
+        });
+    }
+
+     if (message.mentions.roles.has(HONEY2_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                'PLACEHOLDER.'
+            )
+            .setImage('attachment://honeybanner.png')
+            .setColor(0x0c0c0c);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/honeybanner.png']
+        });
+    }
+
+    // IVY ROLE
+    if (message.mentions.roles.has(IVY_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝐈 𝐦𝐚𝐝𝐞 𝐚𝐧𝐨𝐭𝐡𝐞𝐫 𝐠𝐮𝐲 𝐰𝐢𝐭𝐡 𝐢𝐬𝐬𝐮𝐞𝐬.'
+            )
+            .setImage('attachment://nicolebanner.png')
+            .setColor(0xba1515);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/nicolebanner.png']
+        });
+    }
+
+    if (message.mentions.roles.has(IVY2_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝐈 𝐦𝐚𝐝𝐞 𝐚𝐧𝐨𝐭𝐡𝐞𝐫 𝐠𝐮𝐲 𝐰𝐢𝐭𝐡 𝐢𝐬𝐬𝐮𝐞𝐬.'
+            )
+            .setImage('attachment://nicolebanner.png')
+            .setColor(0xba1515);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/nicolebanner.png']
+        });
+    }
+
+    // LOLO ROLE
+    
+    if (message.mentions.roles.has(LOLO_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝙇𝙤𝙡𝙤 𝙙𝙞𝙨𝙘𝙤𝙪𝙧𝙨𝙚 𝙞𝙨 𝙨𝙩𝙖𝙧𝙩𝙞𝙣𝙜 𝙤𝙣 𝙏𝙬𝙞𝙩𝙩𝙚𝙧 𝙖𝙜𝙖𝙞𝙣…'
+            )
+            .setImage('attachment://lolobanner.png')
+            .setColor(0xe4d7ff);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/lolobanner.png']
+        });
+    }
+
+    
+    if (message.mentions.roles.has(LOLO2_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝙇𝙤𝙡𝙤 𝙙𝙞𝙨𝙘𝙤𝙪𝙧𝙨𝙚 𝙞𝙨 𝙨𝙩𝙖𝙧𝙩𝙞𝙣𝙜 𝙤𝙣 𝙏𝙬𝙞𝙩𝙩𝙚𝙧 𝙖𝙜𝙖𝙞𝙣…'
+            )
+            .setImage('attachment://lolobanner.png')
+            .setColor(0xe4d7ff);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/lolobanner.png']
+        });
+    }
+
+
+    
+    if (message.mentions.roles.has(LOLO3_ROLE_ID)) {
+
+        const embed = new EmbedBuilder()
+            .setDescription(
+                '𝙇𝙤𝙡𝙤 𝙙𝙞𝙨𝙘𝙤𝙪𝙧𝙨𝙚 𝙞𝙨 𝙨𝙩𝙖𝙧𝙩𝙞𝙣𝙜 𝙤𝙣 𝙏𝙬𝙞𝙩𝙩𝙚𝙧 𝙖𝙜𝙖𝙞𝙣…'
+            )
+            .setImage('attachment://lolobanner.png')
+            .setColor(0xe4d7ff);
+
+        return message.reply({
+            embeds: [embed],
+            files: ['./images/lolobanner.png']
+        });
+    }
+
+
 
 });
 

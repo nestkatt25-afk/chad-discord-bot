@@ -372,7 +372,7 @@ client.on('messageCreate', async message => {
             .setDescription(
                 'ᴀ ɴᴇᴡ ʜᴇʀʙᴀʟ ʀᴇᴍᴇᴅʏ ᴛᴏ ꜱᴏᴏᴛʜᴇ ᴛʜᴇ ꜱᴏᴜʟ.'
             )
-            .setImage('attachment://usagibanner.png')
+            .setImage('attachment://quinniebanner.png')
             .setColor(0x80afcc);
 
         return message.reply({

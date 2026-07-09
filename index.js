@@ -100,7 +100,8 @@ async function sendSticky(channel) {
                     '',
                     '───── ⋆.✶.⋆ ─────',
                     '',
-                    'ⓘ Please set ***BOTH*** your birthday and timezone in separate messages so the birthday system can work correctly.'
+                    'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
+                    'ⓘ Birthday and timezone messages must be sent separately.'
                 ].join('\n')
             )
             .setColor(0x7C0A02);

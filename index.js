@@ -90,7 +90,7 @@ async function sendSticky(channel) {
                     '',
                     '`!birthday MM-DD` — Will not work if not formatted this way',
                     '',
-                    '`!timezone IANA timezones` — timezone format ',
+                    '`!timezone [type IANA timezone here]` — timezone',
                     '',
                     '`!birthdayview` — view your info',
                     '',
@@ -100,7 +100,7 @@ async function sendSticky(channel) {
                     '',
                     '───── ⋆.✶.⋆ ─────',
                     '',
-                    'ⓘ Please set ***BOTH*** your birthday and timezone so the birthday system can work correctly.'
+                    'ⓘ Please set ***BOTH*** your birthday and timezone in separate messages so the birthday system can work correctly.'
                 ].join('\n')
             )
             .setColor(0x7C0A02);

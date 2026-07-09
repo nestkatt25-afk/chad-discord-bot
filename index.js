@@ -240,7 +240,6 @@ const BUNNIE_ROLE_ID = '1507687973615829063';
 const BUNNIE2_ROLE_ID = '1507687926719447241';
 const USAGI_ROLE_ID = '1507687788588302437';
 const USAGI2_ROLE_ID = '1507687849183412274';
-const USAGI3_ROLE_ID = '1507687849183412274';
 const QUINNIE_ROLE_ID = '1507688523824762940';
 const QUINNIE2_ROLE_ID = '1507688569660112976';
 const IVY_ROLE_ID = '1507688388658991145';
@@ -336,21 +335,6 @@ client.on('messageCreate', async message => {
     }
 
      if (message.mentions.roles.has(USAGI2_ROLE_ID)) {
-
-        const embed = new EmbedBuilder()
-            .setDescription(
-                '𝕌𝕤𝕒𝕘𝕚 𝕡𝕠𝕤𝕥𝕖𝕕 𝕒𝕟 𝕒𝕖𝕤𝕥𝕙𝕖𝕥𝕚𝕔 𝕡𝕙𝕠𝕥𝕠 𝕠𝕗 𝕤𝕒𝕜𝕦𝕣𝕒 𝕗𝕝𝕠𝕨𝕖𝕣𝕤.'
-            )
-            .setImage('attachment://usagibanner.png')
-            .setColor(0xf4a2d1);
-
-        return message.reply({
-            embeds: [embed],
-            files: ['./images/usagibanner.png']
-        });
-    }
-
-     if (message.mentions.roles.has(USAGI3_ROLE_ID)) {
 
         const embed = new EmbedBuilder()
             .setDescription(

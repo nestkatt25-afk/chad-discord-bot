@@ -403,7 +403,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                'PLACEHOLDER.'
+                '𝕳𝖊 𝖕𝖑𝖆𝖞𝖘 𝖋𝖔𝖗 𝖐𝖊𝖊𝖕𝖘. 𝕯𝖔 𝖞𝖔𝖚?'
             )
             .setImage('attachment://honeybanner.png')
             .setColor(0x0c0c0c);
@@ -418,7 +418,7 @@ client.on('messageCreate', async message => {
 
         const embed = new EmbedBuilder()
             .setDescription(
-                'PLACEHOLDER.'
+                '𝕬 𝖑𝖎𝖙𝖙𝖑𝖊 𝖘𝖔𝖒𝖊𝖙𝖍𝖎𝖓𝖌 𝖙𝖔 𝖐𝖊𝖊𝖕 𝖞𝖔𝖚 𝖈𝖗𝖆𝖛𝖎𝖓𝖌...'
             )
             .setImage('attachment://honeybanner.png')
             .setColor(0x0c0c0c);
